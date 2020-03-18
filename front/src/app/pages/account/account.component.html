@@ -1,0 +1,103 @@
+<div *ngIf="!isStatus" class="container">
+  <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="listusers-tab" data-toggle="tab" href="#listusers" role="tab"
+        aria-selected="true">Список користувачів</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="listgroup-tab" data-toggle="tab" href="#listgroup" role="tab" aria-selected="false">Список
+        Груп</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active mt-5" id="listusers" role="tabpanel" aria-labelledby="listusers-tab">
+      <p class="mt-5">Створити користувача</p>
+      <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
+        <div class="form-group">
+          <label>Логін</label>
+          <input type="text" #login="ngModel" name="login" [(ngModel)]="formData.login" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="text" #password="ngModel" name="password" [(ngModel)]="formData.password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Статус</label>
+          <select #status="ngModel" name="status" [(ngModel)]="formData.status" class="form-control">
+            <option>Користувач</option>
+            <option>Адміністратор</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Додати</button>
+      </form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Імя</th>
+            <th scope="col">Редагувати</th>
+            <th scope="col">Видалити</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of arrayUsers; let i=index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{item.login}}</td>
+            <td>
+              <button type="button" (click)="editUsers(item._id)" class="btn btn-warning">Редагувати</button>
+            </td>
+            <td>
+              <button type="button" (click)="deleteUsers(item._id)" class="btn btn-danger">Видалити</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="listgroup" role="tabpanel" aria-labelledby="listgroup-tab">
+      <p class="mt-5">Створити групу</p>
+      <form>
+        <div class="form-group">
+          <label>Назва групи</label>
+          <input type="text"name="nameGroup" [(ngModel)]="nameGroup" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Додати учасника</label>
+          <select name="addGroupUser" [(ngModel)]="addGroupUser" class="form-control">
+            <option *ngFor="let item of arrayUsers" value="{{item.login}}">{{item.login}}</option>
+          </select>
+        </div>
+
+        <button *ngIf="!editGroups" (click)="addGroups()" type="button" class="btn btn-primary">Додати</button>
+        <button *ngIf="editGroups" (click)="saveGroups()" type="button" class="btn btn-primary">Сохранити</button>
+      </form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Група</th>
+            <th scope="col">Користувачі</th>
+            <th scope="col">Редагувати</th>
+            <th scope="col">Видалити</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of arrayGroup; let i=index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{item.title}}</td>
+            <td>{{item.users}}</td>
+            <td>
+              <button type="button" (click)="editGroup(item._id)" class="btn btn-warning">Редагувати</button>
+            </td>
+            <td>
+              <button type="button" (click)="deleteGroup(item._id)" class="btn btn-danger">Видалити</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="isStatus" class="container">
+    <p class="mt-5">Ваш логин: {{user.login}}</p>
+</div>
